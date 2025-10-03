@@ -1,0 +1,32 @@
+{
+  "common": {
+    "welcome": "Bienvenue sur KidGuard",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "retry": "Réessayer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "email": "Email",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "createAccount": "Créer un compte"
+  },
+  "parent": {
+    "dashboard": "Tableau de bord",
+    "children": "Enfants",
+    "settings": "Paramètres",
+    "addChild": "Ajouter un enfant"
+  },
+  "child": {
+    "exercise": "Exercice",
+    "timeBank": "Banque de temps",
+    "earnedTime": "Temps gagné",
+    "stars": "Étoiles",
+    "points": "Points"
+  }
+}
