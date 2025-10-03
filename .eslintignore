@@ -1,0 +1,9 @@
+node_modules/
+.expo/
+dist/
+web-build/
+coverage/
+*.config.js
+jest.setup.js
+babel.config.js
+metro.config.js
