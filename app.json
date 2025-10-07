@@ -15,6 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kidguard.app",
+      "deploymentTarget": "15.1",
       "infoPlist": {
         "NSUserTrackingUsageDescription": "This identifier will be used to deliver personalized educational content.",
         "NSFaceIDUsageDescription": "We use Face ID to protect your parental settings."
@@ -29,7 +30,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "bundler": "metro"
+      "output": "server"
     },
     "plugins": [
       "expo-router",

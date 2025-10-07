@@ -1,168 +1,42 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  SafeAreaView,
-} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import PhoneSharingButton from '@/components/parent/PhoneSharingButton';
-import DashboardStats from '@/components/parent/DashboardStats';
-import ConfirmationDialog from '@/components/parent/ConfirmationDialog';
-import type { ChildProfile } from '@/lib/types';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from '@/components/ui';
+import { useAuth } from '@/hooks/useAuth';
 
-/**
- * Parent Dashboard Screen
- * 
- * Displays:
- * - Phone sharing buttons for each child
- * - At-a-glance statistics
- * - Quick navigation to other parent features
- */
-export default function ParentDashboard() {
-  const [selectedChild, setSelectedChild] = useState<ChildProfile | null>(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
+export default function DashboardScreen() {
+  const { signOut } = useAuth();
 
-  // TODO: Replace with actual data from API
-  const mockChildren: ChildProfile[] = [
-    {
-      id: '1',
-      parentId: 'parent-1',
-      name: 'Sophie',
-      age: 8,
-      avatar: null,
-      difficultyLevel: 'easy',
-      exerciseTypes: ['math', 'reading', 'logic'],
-      timeRewardMinutes: 15,
-      blockedAppCategories: ['all'],
-      totalPoints: 250,
-      totalStars: 25,
-      currentStreak: 5,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '2',
-      parentId: 'parent-1',
-      name: 'Lucas',
-      age: 11,
-      avatar: null,
-      difficultyLevel: 'medium',
-      exerciseTypes: ['math', 'reading', 'logic', 'vocabulary'],
-      timeRewardMinutes: 20,
-      blockedAppCategories: ['games', 'social'],
-      totalPoints: 480,
-      totalStars: 42,
-      currentStreak: 12,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
-
-  // TODO: Replace with actual statistics from API
-  const stats = {
-    childrenCount: mockChildren.length,
-    totalExercisesToday: 12,
-    totalTimeEarnedToday: 180, // minutes
-  };
-
-  const handlePhoneSharingPress = (child: ChildProfile) => {
-    setSelectedChild(child);
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmActivation = () => {
-    if (!selectedChild) return;
-
-    // TODO: Call API to start child session
-    console.log(`Activating child mode for: ${selectedChild.name}`);
-    
-    setShowConfirmation(false);
-    setSelectedChild(null);
-    
-    // TODO: Navigate to child mode screen
-  };
-
-  const handleCancelActivation = () => {
-    setShowConfirmation(false);
-    setSelectedChild(null);
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-      
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Tableau de bord</Text>
-          <Text style={styles.subtitle}>Bonjour ! Bienvenue sur KidGuard</Text>
-        </View>
-
-        {/* Dashboard Statistics */}
-        <DashboardStats stats={stats} />
-
-        {/* Phone Sharing Buttons Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Partage de téléphone</Text>
-          <Text style={styles.sectionDescription}>
-            Activez le mode enfant pour partager votre téléphone en toute sécurité
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.content}>
+        <Text style={styles.title}>🎯 Tableau de bord Parent</Text>
+        <Text style={styles.subtitle}>Bienvenue dans KidGuard!</Text>
+        
+        <View style={styles.info}>
+          <Text style={styles.infoText}>
+            Cette page sera le tableau de bord principal où vous pourrez:
           </Text>
-          
-          <View style={styles.phoneSharingButtons}>
-            {mockChildren.length === 0 ? (
-              <View style={styles.emptyState}>
-                <Text style={styles.emptyStateText}>
-                  Aucun enfant configuré
-                </Text>
-                <Text style={styles.emptyStateSubtext}>
-                  Ajoutez votre premier enfant pour commencer
-                </Text>
-              </View>
-            ) : (
-              mockChildren.map((child) => (
-                <PhoneSharingButton
-                  key={child.id}
-                  child={child}
-                  onPress={() => handlePhoneSharingPress(child)}
-                />
-              ))
-            )}
-          </View>
+          <Text style={styles.bulletPoint}>• Voir vos enfants</Text>
+          <Text style={styles.bulletPoint}>• Activer le mode partage de téléphone</Text>
+          <Text style={styles.bulletPoint}>• Consulter les statistiques</Text>
         </View>
 
-        {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Actions rapides</Text>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionButtonText}>👶 Gérer les enfants</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionButtonText}>📊 Voir l'activité</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.actionButton}>
-            <Text style={styles.actionButtonText}>⚙️ Paramètres</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      {/* Confirmation Dialog */}
-      <ConfirmationDialog
-        visible={showConfirmation}
-        childName={selectedChild?.name || ''}
-        onConfirm={handleConfirmActivation}
-        onCancel={handleCancelActivation}
-      />
+        <Button
+          title="Se déconnecter"
+          onPress={handleSignOut}
+          variant="outline"
+          style={styles.logoutButton}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -170,81 +44,52 @@ export default function ParentDashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F7FA', // Light calming background
+    backgroundColor: '#F8F9FA',
   },
-  scrollView: {
+  content: {
     flex: 1,
-  },
-  contentContainer: {
-    padding: 20,
-    paddingBottom: 40,
-  },
-  header: {
-    marginBottom: 24,
+    padding: 24,
+    justifyContent: 'center',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#2C5F7C', // Calming blue for parent mode
-    marginBottom: 4,
+    color: '#4A90E2',
+    textAlign: 'center',
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#64748B',
+    fontSize: 18,
+    color: '#666666',
+    textAlign: 'center',
+    marginBottom: 48,
   },
-  section: {
+  info: {
+    backgroundColor: '#FFFFFF',
+    padding: 24,
+    borderRadius: 16,
     marginBottom: 32,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#334155',
-    marginBottom: 8,
-  },
-  sectionDescription: {
-    fontSize: 14,
-    color: '#64748B',
+  infoText: {
+    fontSize: 16,
+    color: '#333333',
     marginBottom: 16,
   },
-  phoneSharingButtons: {
-    gap: 12,
-  },
-  emptyState: {
-    padding: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: '#E2E8F0',
-    borderStyle: 'dashed',
-  },
-  emptyStateText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#334155',
-    marginBottom: 8,
-  },
-  emptyStateSubtext: {
+  bulletPoint: {
     fontSize: 14,
-    color: '#64748B',
+    color: '#666666',
+    marginLeft: 8,
+    marginVertical: 4,
   },
-  actionButton: {
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  actionButtonText: {
-    fontSize: 16,
-    color: '#334155',
-    fontWeight: '500',
+  logoutButton: {
+    marginTop: 16,
   },
 });
