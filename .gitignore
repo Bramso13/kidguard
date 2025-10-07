@@ -55,3 +55,7 @@ coverage/
 # Misc
 *.log
 .cache/
+
+/generated/prisma
+
+.env.local
