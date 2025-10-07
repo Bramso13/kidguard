@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
+import * as Sentry from '@sentry/react-native';
 
 export default function Index() {
   return (
@@ -6,6 +7,12 @@ export default function Index() {
       <Text style={styles.title}>🎯 KidGuard</Text>
       <Text style={styles.subtitle}>Transform screen time into learning time</Text>
       <Text style={styles.info}>Project initialized successfully!</Text>
+      <Button
+        title="Try!"
+        onPress={() => {
+          Sentry.captureException(new Error('First error'));
+        }}
+      />
     </View>
   );
 }

@@ -1,7 +1,12 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import * as Sentry from '@sentry/react-native';
 
-export default function RootLayout() {
+Sentry.init({
+  dsn: 'https://bff28ceda66564ff6d3c54334b43fffb@o4510148443176960.ingest.de.sentry.io/4510148445208656',
+});
+
+export default Sentry.wrap(function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
@@ -10,4 +15,4 @@ export default function RootLayout() {
       </Stack>
     </>
   );
-}
+});
