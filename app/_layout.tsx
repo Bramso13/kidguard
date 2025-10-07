@@ -10,9 +10,11 @@ export default Sentry.wrap(function RootLayout() {
   return (
     <>
       <StatusBar style="auto" />
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(auth)" />
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(parent)" options={{ headerShown: false }} />
+        <Stack.Screen name="(child)" options={{ headerShown: false }} />
       </Stack>
     </>
   );
