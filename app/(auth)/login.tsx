@@ -27,11 +27,11 @@ export default function LoginScreen() {
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
-      setEmailError('L\'email est requis');
+      setEmailError("L'email est requis");
       return false;
     }
     if (!emailRegex.test(email)) {
-      setEmailError('Format d\'email invalide');
+      setEmailError("Format d'email invalide");
       return false;
     }
     setEmailError('');
@@ -64,13 +64,13 @@ export default function LoginScreen() {
 
     try {
       await signIn(email, password);
-      
+
       // Redirection vers le dashboard parent après connexion réussie
       router.replace('/(parent)/dashboard');
     } catch (error: any) {
       // Affichage du message d'erreur en français
-      let errorMessage = 'Une erreur s\'est produite lors de la connexion';
-      
+      let errorMessage = "Une erreur s'est produite lors de la connexion";
+
       if (error.message) {
         if (error.message.includes('Invalid credentials')) {
           errorMessage = 'Email ou mot de passe incorrect';
@@ -89,11 +89,9 @@ export default function LoginScreen() {
 
   const handleForgotPassword = () => {
     // Fonctionnalité différée à Phase 2
-    Alert.alert(
-      'Mot de passe oublié',
-      'Cette fonctionnalité sera disponible prochainement.',
-      [{ text: 'OK' }]
-    );
+    Alert.alert('Mot de passe oublié', 'Cette fonctionnalité sera disponible prochainement.', [
+      { text: 'OK' },
+    ]);
   };
 
   return (
@@ -147,10 +145,7 @@ export default function LoginScreen() {
             />
 
             {/* Lien mot de passe oublié */}
-            <TouchableOpacity
-              onPress={handleForgotPassword}
-              style={styles.forgotPasswordButton}
-            >
+            <TouchableOpacity onPress={handleForgotPassword} style={styles.forgotPasswordButton}>
               <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
             </TouchableOpacity>
 
