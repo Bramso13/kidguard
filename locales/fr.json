@@ -43,5 +43,40 @@
     "correctAnswer": "Bonne réponse!",
     "tryAgain": "Presque! Essaye encore!",
     "hint": "Indice"
+  },
+  "childProfile": {
+    "title": "Profil de l'enfant",
+    "basicInfo": "Informations de base",
+    "exerciseConfig": "Configuration des exercices",
+    "firstName": "Prénom de l'enfant",
+    "firstNamePlaceholder": "Ex: Sophie",
+    "age": "Âge",
+    "agePlaceholder": "Entre 6 et 14 ans",
+    "ageHelp": "L'âge détermine automatiquement le niveau de difficulté",
+    "difficulty": "Niveau de difficulté",
+    "difficultyHelp": "Sélectionné automatiquement selon l'âge, mais peut être ajusté",
+    "difficultyEasy": "Facile",
+    "difficultyMedium": "Moyen",
+    "difficultyHard": "Difficile",
+    "ageRange6to8": "6-8 ans",
+    "ageRange9to11": "9-11 ans",
+    "ageRange12to14": "12-14 ans",
+    "timeReward": "Temps gagné par exercice réussi",
+    "timeRewardHelp": "Entre 5 et 60 minutes. Recommandé: 15 minutes",
+    "minutes": "minutes",
+    "createProfile": "Créer le profil",
+    "updateProfile": "Sauvegarder",
+    "profileCreated": "Profil créé avec succès",
+    "profileUpdated": "Profil mis à jour avec succès",
+    "loadError": "Impossible de charger le profil de l'enfant",
+    "saveError": "Une erreur est survenue lors de la sauvegarde"
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "firstNameRequired": "Le prénom est requis",
+    "ageRequired": "L'âge est requis",
+    "ageRange": "L'âge doit être entre 6 et 14 ans",
+    "timeRewardRequired": "Le temps de récompense est requis",
+    "timeRewardRange": "Le temps doit être entre 5 et 60 minutes"
   }
 }

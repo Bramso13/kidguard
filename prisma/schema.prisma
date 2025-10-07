@@ -15,15 +15,17 @@ generator client {
 }
 
 model User {
-  id            String    @id
+  id            String         @id
   name          String
   email         String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean        @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  children      ChildProfile[]
+  parentUser    ParentUser?
 
   @@unique([email])
   @@map("User")
@@ -72,4 +74,62 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+// ========================================
+// KidGuard Models
+// ========================================
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ExerciseType {
+  MATH
+  READING
+  LOGIC
+  VOCABULARY
+}
+
+model ChildProfile {
+  id                    String          @id @default(uuid())
+  parentId              String
+  name                  String
+  age                   Int             // 6-14
+  avatar                String?
+  difficultyLevel       DifficultyLevel @default(MEDIUM)
+  exerciseTypes         ExerciseType[]  @default([MATH, READING, LOGIC, VOCABULARY])
+  timeRewardMinutes     Int             @default(15) // 5-60
+  blockedAppCategories  String[]        @default([])
+  blockedAppsToken      String?
+
+  // Gamification
+  totalPoints           Int             @default(0)
+  totalStars            Int             @default(0)
+  currentStreak         Int             @default(0)
+
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  // Relations
+  parent                User            @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  @@index([parentId])
+  @@index([parentId, createdAt])
+  @@map("child_profiles")
+}
+
+model ParentUser {
+  id                    String          @id @default(uuid())
+  userId                String          @unique
+  pinHash               String
+  locale                String          @default("fr")
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("parent_users")
 }
