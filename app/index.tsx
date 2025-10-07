@@ -1,18 +1,41 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
-import * as Sentry from '@sentry/react-native';
+import { useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Text } from 'react-native-paper';
+import { useRouter } from 'expo-router';
+import { authClient } from '@/lib/auth-client';
 
 export default function Index() {
+  const router = useRouter();
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const session = await authClient.getSession();
+
+      if (session?.user) {
+        // User is authenticated, navigate to parent dashboard
+        // TODO: Create parent dashboard and navigate there
+        router.replace('/(auth)/register');
+      } else {
+        // User is not authenticated, navigate to register
+        router.replace('/(auth)/register');
+      }
+    } catch (error) {
+      console.error('Error checking auth status:', error);
+      // On error, navigate to register
+      router.replace('/(auth)/register');
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🎯 KidGuard</Text>
-      <Text style={styles.subtitle}>Transform screen time into learning time</Text>
-      <Text style={styles.info}>Project initialized successfully!</Text>
-      <Button
-        title="Try!"
-        onPress={() => {
-          Sentry.captureException(new Error('First error'));
-        }}
-      />
+      <ActivityIndicator size="large" color="#4A90E2" />
+      <Text variant="bodyLarge" style={styles.loadingText}>
+        Chargement...
+      </Text>
     </View>
   );
 }
@@ -20,26 +43,13 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4A90E2',
+    backgroundColor: '#F5F5F5',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
   },
-  title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 16,
-  },
-  subtitle: {
-    fontSize: 20,
-    color: '#FFFFFF',
-    marginBottom: 32,
-    textAlign: 'center',
-  },
-  info: {
-    fontSize: 16,
-    color: '#E0E0E0',
-    textAlign: 'center',
+  loadingText: {
+    marginTop: 16,
+    color: '#666',
   },
 });
