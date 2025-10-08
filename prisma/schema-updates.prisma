@@ -1,0 +1,173 @@
+// Modèles manquants à ajouter au schema.prisma principal
+// À fusionner avec le schema existant
+
+model ParentUser {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  pinHash       String
+  locale        String   @default("fr")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  children         ChildProfile[]
+  sessions         ChildSession[]
+  exerciseFeedback ExerciseFeedback[]
+
+  @@map("parent_users")
+}
+
+model ChildProfile {
+  id                    String          @id @default(uuid())
+  parentId              String
+  name                  String
+  age                   Int
+  avatar                String?
+  difficultyLevel       DifficultyLevel @default(MEDIUM)
+  exerciseTypes         ExerciseType[]
+  timeRewardMinutes     Int             @default(15)
+  blockedAppCategories  String[]
+  blockedAppsToken      String?
+
+  totalPoints           Int             @default(0)
+  totalStars            Int             @default(0)
+  currentStreak         Int             @default(0)
+
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  parent           ParentUser         @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  exercises        Exercise[]
+  exerciseHistory  ExerciseHistory[]
+  sessions         ChildSession[]
+  feedback         ExerciseFeedback[]
+
+  @@index([parentId])
+  @@index([parentId, createdAt])
+  @@map("child_profiles")
+}
+
+enum DifficultyLevel {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ExerciseType {
+  MATH
+  READING
+  LOGIC
+  VOCABULARY
+}
+
+model Exercise {
+  id             String          @id @default(uuid())
+  childId        String
+  type           ExerciseType
+  difficulty     DifficultyLevel
+  question       String          @db.Text
+  correctAnswer  String
+  hints          String[]
+  metadata       Json
+  isFallback     Boolean         @default(false)
+  disabled       Boolean         @default(false)
+  usedAt         DateTime?
+  createdAt      DateTime        @default(now())
+
+  child           ChildProfile      @relation(fields: [childId], references: [id], onDelete: Cascade)
+  exerciseHistory ExerciseHistory[]
+  feedback        ExerciseFeedback[]
+
+  @@index([childId, createdAt])
+  @@index([childId, type, usedAt])
+  @@map("exercises")
+}
+
+model ExerciseHistory {
+  id                String   @id @default(uuid())
+  exerciseId        String
+  childId           String
+  childAnswer       String
+  isCorrect         Boolean
+  leniencyApplied   Boolean  @default(false)
+  feedback          String   @db.Text
+  attemptNumber     Int      @default(1)
+  validationTimeMs  Int
+  attemptedAt       DateTime @default(now())
+
+  exercise Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  child    ChildProfile @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  @@index([childId, attemptedAt])
+  @@index([exerciseId])
+  @@index([attemptedAt])
+  @@map("exercise_history")
+}
+
+model FallbackExercise {
+  id             String          @id @default(uuid())
+  type           ExerciseType
+  difficulty     DifficultyLevel
+  ageRange       String
+  question       String          @db.Text
+  correctAnswer  String
+  hints          String[]
+  reviewedBy     String?
+  createdAt      DateTime        @default(now())
+
+  @@index([type, difficulty, ageRange])
+  @@map("fallback_exercises")
+}
+
+model ChildSession {
+  id                         String    @id @default(uuid())
+  childId                    String
+  parentId                   String
+  deviceId                   String
+  remainingTimeMinutes       Float     @default(0)
+  isActive                   Boolean   @default(true)
+  deviceActivityMonitorName  String?
+  startedAt                  DateTime  @default(now())
+  endedAt                    DateTime?
+
+  child  ChildProfile @relation(fields: [childId], references: [id], onDelete: Cascade)
+  parent ParentUser   @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  @@index([deviceId, isActive])
+  @@index([childId, isActive])
+  @@index([startedAt])
+  @@map("child_sessions")
+}
+
+model ExerciseFeedback {
+  id         String             @id @default(uuid())
+  exerciseId String
+  childId    String
+  parentId   String
+  issueType  FeedbackIssueType
+  comment    String?            @db.Text
+  status     FeedbackStatus     @default(PENDING)
+  createdAt  DateTime           @default(now())
+
+  exercise Exercise     @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  child    ChildProfile @relation(fields: [childId], references: [id], onDelete: Cascade)
+  parent   ParentUser   @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  @@index([exerciseId])
+  @@index([status, createdAt])
+  @@map("exercise_feedback")
+}
+
+enum FeedbackIssueType {
+  TOO_DIFFICULT
+  TOO_EASY
+  INAPPROPRIATE
+  WRONG_ANSWER
+  OTHER
+}
+
+enum FeedbackStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+}
