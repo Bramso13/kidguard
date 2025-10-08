@@ -76,46 +76,21 @@ model Verification {
 }
 
 // ========================================
-// Child Profile & Settings
+// Child Profile (Story 2.4)
 // ========================================
 
 model ChildProfile {
-  id                    String   @id @default(uuid())
-  parentId              String
-  name                  String
-  age                   Int // 6-14
-  avatar                String?
-  difficultyLevel       DifficultyLevel @default(MEDIUM)
-  exerciseTypes         ExerciseType[]
-  timeRewardMinutes     Int      @default(15) // 5-60
-  blockedAppCategories  String[]
-  blockedAppsToken      String?  // iOS FamilyActivitySelection token
-
-  // Gamification
-  totalPoints           Int      @default(0)
-  totalStars            Int      @default(0)
-  currentStreak         Int      @default(0)
-
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id        String   @id @default(uuid())
+  parentId  String
+  name      String
+  age       Int      // 6-14
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  parent           User         @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  parent User @relation(fields: [parentId], references: [id], onDelete: Cascade)
 
   @@index([parentId])
-  @@index([parentId, createdAt])
   @@map("child_profiles")
-}
-
-enum DifficultyLevel {
-  EASY
-  MEDIUM
-  HARD
-}
-
-enum ExerciseType {
-  MATH
-  READING
-  LOGIC
-  VOCABULARY
 }
