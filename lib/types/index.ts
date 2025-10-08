@@ -86,3 +86,6 @@ export interface ChildSession {
   startedAt: Date;
   endedAt: Date | null;
 }
+
+// Export analytics types
+export * from './analytics';
