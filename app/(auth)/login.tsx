@@ -66,7 +66,7 @@ export default function LoginScreen() {
       await signIn(email, password);
 
       // Redirection vers le dashboard parent après connexion réussie
-      router.replace('/(parent)/dashboard');
+      router.replace('/(parent)');
     } catch (error: any) {
       // Affichage du message d'erreur en français
       let errorMessage = "Une erreur s'est produite lors de la connexion";

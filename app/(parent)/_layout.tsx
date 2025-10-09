@@ -1,37 +1,30 @@
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
+import { Icon } from 'react-native-paper';
 
 export default function ParentLayout() {
   return (
-    <Stack
+    <Tabs
       screenOptions={{
-<<<<<<< HEAD
-        headerStyle: {
-          backgroundColor: '#4A90E2',
-        },
-        headerTintColor: '#FFFFFF',
-        headerTitleStyle: {
-          fontWeight: '600',
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF',
         },
       }}
     >
-      <Stack.Screen
-        name="analytics/index"
+      <Tabs.Screen
+        name="index"
         options={{
           title: 'Tableau de bord',
+          tabBarIcon: ({ color }) => <Icon source="home" color={color} size={24} />,
         }}
       />
-    </Stack>
+      <Tabs.Screen
+        name="analytics/index"
+        options={{
+          title: 'Analytics',
+          tabBarIcon: ({ color }) => <Icon source="chart-bar" color={color} size={24} />,
+        }}
+      />
+    </Tabs>
   );
 }
-=======
-        headerShown: false,
-        contentStyle: {
-          backgroundColor: '#F8F9FA',
-        },
-      }}
-    >
-      <Stack.Screen name="dashboard" />
-    </Stack>
-  );
-}
->>>>>>> origin/main
