@@ -44,7 +44,22 @@
     "childName": "Nom de l'enfant",
     "childAge": "Âge",
     "phoneSharingMode": "{{name}} va utiliser ce téléphone",
-    "exitChildMode": "Sortir du mode enfant"
+    "exitChildMode": "Sortir du mode enfant",
+    "activateChildMode": "Activer le mode {{name}} ?",
+    "childModeWarning": "Le téléphone sera verrouillé en mode enfant. Vous devrez entrer votre code PIN pour en sortir.",
+    "confirmActivation": "Confirmer",
+    "phoneSharing": "Partage de téléphone",
+    "manageScreenTime": "Gérez le temps d'écran de vos enfants",
+    "addFirstChild": "Ajoutez votre premier enfant pour commencer",
+    "todayOverview": "Aperçu du jour",
+    "points": "points",
+    "stars": "étoiles",
+    "child": "enfant",
+    "children_plural": "enfants",
+    "exercise": "exercice",
+    "exercises_plural": "exercices",
+    "timeEarned": "temps gagné",
+    "willUsePhone": "va utiliser ce téléphone"
   },
   "child": {
     "exercise": "Exercice",
