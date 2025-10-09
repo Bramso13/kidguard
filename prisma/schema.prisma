@@ -24,6 +24,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  children      ChildProfile[]
 
   @@unique([email])
   @@map("User")
@@ -72,4 +73,24 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+// ========================================
+// Child Profile (Story 2.4 - LES-79)
+// ========================================
+
+model ChildProfile {
+  id        String   @id @default(uuid())
+  parentId  String
+  name      String
+  age       Int      // 6-14
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  parent User @relation(fields: [parentId], references: [id], onDelete: Cascade)
+
+  @@index([parentId])
+  @@map("child_profiles")
 }

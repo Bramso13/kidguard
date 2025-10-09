@@ -19,6 +19,19 @@ export default function ParentLayout() {
         }}
       />
       <Tabs.Screen
+        name="children/index"
+        options={{
+          title: 'Enfants',
+          tabBarIcon: ({ color }) => <Icon source="account-multiple" color={color} size={24} />,
+        }}
+      />
+      <Tabs.Screen
+        name="children/[id]"
+        options={{
+          href: null, // Hide from tabs (only accessible via navigation)
+        }}
+      />
+      <Tabs.Screen
         name="analytics/index"
         options={{
           title: 'Analytics',

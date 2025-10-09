@@ -30,15 +30,8 @@ export interface ChildProfile {
   id: string;
   parentId: string;
   name: string;
-  age: number;
+  age: number; // 6-14
   avatar: string | null;
-  difficultyLevel: DifficultyLevel;
-  exerciseTypes: ExerciseType[];
-  timeRewardMinutes: number;
-  blockedAppCategories: AppCategory[];
-  totalPoints: number;
-  totalStars: number;
-  currentStreak: number;
   createdAt: Date;
   updatedAt: Date;
 }
