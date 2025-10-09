@@ -4,6 +4,7 @@ export default function ParentLayout() {
   return (
     <Stack
       screenOptions={{
+<<<<<<< HEAD
         headerStyle: {
           backgroundColor: '#4A90E2',
         },
@@ -22,3 +23,15 @@ export default function ParentLayout() {
     </Stack>
   );
 }
+=======
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: '#F8F9FA',
+        },
+      }}
+    >
+      <Stack.Screen name="dashboard" />
+    </Stack>
+  );
+}
+>>>>>>> origin/main
